@@ -1,4 +1,4 @@
-module github.com/VonMeumann/shipment-service
+module github.com/vonMeumann/shipment-grpc-service
 
 go 1.24.3
 

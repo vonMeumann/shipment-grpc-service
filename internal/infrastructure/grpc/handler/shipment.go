@@ -5,9 +5,9 @@ import (
 
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	pb "github.com/VonMeumann/shipment-service/api/proto/shipment/v1"
-	"github.com/VonMeumann/shipment-service/internal/domain"
-	"github.com/VonMeumann/shipment-service/internal/usecase"
+	pb "github.com/vonMeumann/shipment-grpc-service/api/proto/shipment/v1"
+	"github.com/vonMeumann/shipment-grpc-service/internal/domain"
+	"github.com/vonMeumann/shipment-grpc-service/internal/usecase"
 )
 
 type ShipmentHandler struct {

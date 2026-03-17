@@ -2,7 +2,7 @@ syntax = "proto3";
 
 package shipment.v1;
 
-option go_package = "github.com/VonMeumann/shipment-service/api/proto/shipment/v1;shipmentv1";
+option go_package = "github.com/vonMeumann/shipment-grpc-service/api/proto/shipment/v1;shipmentv1";
 
 import "google/protobuf/timestamp.proto";
 

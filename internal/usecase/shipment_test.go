@@ -3,8 +3,8 @@ package usecase
 import (
 	"testing"
 
-	"github.com/VonMeumann/shipment-service/internal/domain"
-	"github.com/VonMeumann/shipment-service/internal/infrastructure/repository"
+	"github.com/vonMeumann/shipment-grpc-service/internal/domain"
+	"github.com/vonMeumann/shipment-grpc-service/internal/infrastructure/repository"
 )
 
 func TestShipmentUseCase_AddStatusEvent(t *testing.T) {
