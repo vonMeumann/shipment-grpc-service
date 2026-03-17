@@ -38,3 +38,61 @@ func TestShipment_CanTransitionTo(t *testing.T) {
 		})
 	}
 }
+
+func TestShipment_Validate(t *testing.T) {
+	tests := []struct {
+		name     string
+		shipment *Shipment
+		wantErr  bool
+		err      error
+	}{
+		{
+			"Valid shipment",
+			&Shipment{ReferenceNumber: "SHP-001", Origin: "AA", Destination: "BB", DriverDetails: "DD", UnitDetails: "UU", ShipmentAmount: 100, DriverRevenue: 50},
+			false,
+			nil,
+		},
+		{
+			"Empty reference",
+			&Shipment{ReferenceNumber: "", Origin: "AA", Destination: "BB", DriverDetails: "DD", UnitDetails: "UU"},
+			true,
+			ErrInvalidReference,
+		},
+		{
+			"Too short reference",
+			&Shipment{ReferenceNumber: "SH", Origin: "AA", Destination: "BB", DriverDetails: "DD", UnitDetails: "UU"},
+			true,
+			ErrInvalidReference,
+		},
+		{
+			"Too long reference",
+			&Shipment{ReferenceNumber: "THIS-REFERENCE-NUMBER-IS-DEFINITELY-WAY-TOO-LONG-TO-BE-VALID-IN-OUR-SYSTEM-1234567890", Origin: "AA", Destination: "BB", DriverDetails: "DD", UnitDetails: "UU"},
+			true,
+			ErrInvalidReference,
+		},
+		{
+			"Empty origin",
+			&Shipment{ReferenceNumber: "SHP-001", Origin: "", Destination: "BB", DriverDetails: "DD", UnitDetails: "UU"},
+			true,
+			ErrInvalidOrigin,
+		},
+		{
+			"Negative amount",
+			&Shipment{ReferenceNumber: "SHP-001", Origin: "AA", Destination: "BB", DriverDetails: "DD", UnitDetails: "UU", ShipmentAmount: -1},
+			true,
+			ErrInvalidAmount,
+		},
+	}
+
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			err := tt.shipment.Validate()
+			if (err != nil) != tt.wantErr {
+				t.Errorf("Validate() error = %v, wantErr %v", err, tt.wantErr)
+			}
+			if tt.wantErr && err != tt.err {
+				t.Errorf("Validate() error = %v, want %v", err, tt.err)
+			}
+		})
+	}
+}

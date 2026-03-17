@@ -16,9 +16,15 @@ const (
 )
 
 var (
-	ErrInvalidStatusTransition = errors.New("invalid status transition")
+	ErrInvalidStatusTransition  = errors.New("invalid status transition")
 	ErrShipmentAlreadyCancelled = errors.New("shipment already cancelled")
 	ErrShipmentAlreadyDelivered = errors.New("shipment already delivered")
+	ErrInvalidReference         = errors.New("reference number must be between 3 and 50 characters")
+	ErrInvalidOrigin            = errors.New("origin must be between 2 and 100 characters")
+	ErrInvalidDestination       = errors.New("destination must be between 2 and 100 characters")
+	ErrInvalidDriverDetails     = errors.New("driver details must be between 2 and 100 characters")
+	ErrInvalidUnitDetails       = errors.New("unit details must be between 2 and 100 characters")
+	ErrInvalidAmount            = errors.New("shipment amount and driver revenue cannot be negative")
 )
 
 type Shipment struct {
@@ -30,6 +36,28 @@ type Shipment struct {
 	UnitDetails     string
 	ShipmentAmount  float64
 	DriverRevenue   float64
+}
+
+func (s *Shipment) Validate() error {
+	if len(s.ReferenceNumber) < 3 || len(s.ReferenceNumber) > 50 {
+		return ErrInvalidReference
+	}
+	if len(s.Origin) < 2 || len(s.Origin) > 100 {
+		return ErrInvalidOrigin
+	}
+	if len(s.Destination) < 2 || len(s.Destination) > 100 {
+		return ErrInvalidDestination
+	}
+	if len(s.DriverDetails) < 2 || len(s.DriverDetails) > 100 {
+		return ErrInvalidDriverDetails
+	}
+	if len(s.UnitDetails) < 2 || len(s.UnitDetails) > 100 {
+		return ErrInvalidUnitDetails
+	}
+	if s.ShipmentAmount < 0 || s.DriverRevenue < 0 {
+		return ErrInvalidAmount
+	}
+	return nil
 }
 
 type StatusEvent struct {

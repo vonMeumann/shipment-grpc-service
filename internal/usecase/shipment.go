@@ -26,6 +26,12 @@ func NewShipmentUseCase(repo domain.Repository) ShipmentUseCase {
 func (u *shipmentUseCase) CreateShipment(ref, origin, dest, driver, unit string, amount, revenue float64) error {
 	slog.Info("creating shipment", "ref", ref, "origin", origin, "dest", dest)
 	shipment := domain.NewShipment(ref, origin, dest, driver, unit, amount, revenue)
+
+	if err := shipment.Validate(); err != nil {
+		slog.Warn("shipment validation failed", "ref", ref, "error", err)
+		return err
+	}
+
 	if err := u.repo.SaveShipment(shipment); err != nil {
 		slog.Error("failed to save shipment", "ref", ref, "error", err)
 		return fmt.Errorf("failed to save shipment: %w", err)

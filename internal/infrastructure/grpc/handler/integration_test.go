@@ -52,7 +52,10 @@ func TestShipmentService_Integration(t *testing.T) {
 		ReferenceNumber: ref,
 		Origin:          "New York",
 		Destination:     "Miami",
+		DriverDetails:   "John Doe",
+		UnitDetails:     "Truck 42",
 		ShipmentAmount:  500.0,
+		DriverRevenue:   400.0,
 	})
 	if err != nil {
 		t.Fatalf("failed to create shipment: %v", err)
