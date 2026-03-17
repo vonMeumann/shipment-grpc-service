@@ -31,10 +31,16 @@ docker-compose down
    *Note: Use `SERVER_PORT=8080 go run ...` to change the default port.*
 
 ### Option 3: Postman (GUI)
-1. Open Postman and click **Import**.
-2. Select the file: `postman/Shipment_Service.postman_collection.json`.
-3. The requests are pre-configured with sample JSON data.
-4. *Note: You may need to select the `.proto` file in the request settings if Postman asks for it.*
+1. **Import the Collection**: Open Postman, click **Import**, and select `postman/Shipment_Service.postman_collection.json`.
+2. **Configure gRPC**:
+    - Select any request (e.g., `CreateShipment`) from the collection.
+    - Go to the **Service definition** tab (or the **Service** dropdown under the URL).
+    - Click **Import a .proto file** and select `api/proto/shipment/v1/shipment.proto`.
+    - If prompted, choose **Import as API**.
+3. **Execute Requests**:
+    - Go to the **Message** tab to see the JSON request body.
+    - Click **Invoke** (or **Send**) to trigger the gRPC call to `localhost:50051`.
+    - Ensure the server is running (via Docker or locally) before sending requests.
 
 ---
 
