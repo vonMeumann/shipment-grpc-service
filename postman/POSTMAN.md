@@ -3,7 +3,7 @@
 This document explains how to use the provided Postman collection to test the Shipment Tracking gRPC service.
 
 ## Setup
-1. **Import Collection**: Import `postman/Shipment_Service.postman_collection.json` into Postman.
+1. **link**: https://gold-station-792407.postman.co/workspace/namae~8835573a-dd94-48c9-a65c-8cd4761b7f73/collection/69b9d86ffd7a2abd4befa4d9?action=share&creator=20954863
 2. **Import Proto**:
    - In any gRPC request, go to the **Service** (or **Service definition**) tab.
    - Click **Import a .proto file**.
