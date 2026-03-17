@@ -72,7 +72,7 @@ func (u *shipmentUseCase) AddStatusEvent(ref string, status domain.ShipmentStatu
 	}
 
 	shipment.CurrentStatus = status
-	if err := u.repo.SaveShipment(shipment); err != nil {
+	if err := u.repo.UpdateShipment(shipment); err != nil {
 		slog.Error("failed to update shipment status", "ref", ref, "error", err)
 		return fmt.Errorf("failed to update shipment status: %w", err)
 	}

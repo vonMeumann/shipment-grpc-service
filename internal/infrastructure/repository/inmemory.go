@@ -27,6 +27,23 @@ func NewInMemoryRepository() *InMemoryRepository {
 func (r *InMemoryRepository) SaveShipment(s *domain.Shipment) error {
 	r.mu.Lock()
 	defer r.mu.Unlock()
+
+	if _, exists := r.shipments[s.ReferenceNumber]; exists {
+		return domain.ErrShipmentAlreadyExists
+	}
+
+	r.shipments[s.ReferenceNumber] = s
+	return nil
+}
+
+func (r *InMemoryRepository) UpdateShipment(s *domain.Shipment) error {
+	r.mu.Lock()
+	defer r.mu.Unlock()
+
+	if _, exists := r.shipments[s.ReferenceNumber]; !exists {
+		return ErrShipmentNotFound
+	}
+
 	r.shipments[s.ReferenceNumber] = s
 	return nil
 }

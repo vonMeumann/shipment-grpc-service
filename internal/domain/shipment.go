@@ -19,6 +19,7 @@ var (
 	ErrInvalidStatusTransition  = errors.New("invalid status transition")
 	ErrShipmentAlreadyCancelled = errors.New("shipment already cancelled")
 	ErrShipmentAlreadyDelivered = errors.New("shipment already delivered")
+	ErrShipmentAlreadyExists    = errors.New("shipment with this reference number already exists")
 	ErrInvalidReference         = errors.New("reference number must be between 3 and 50 characters")
 	ErrInvalidOrigin            = errors.New("origin must be between 2 and 100 characters")
 	ErrInvalidDestination       = errors.New("destination must be between 2 and 100 characters")
