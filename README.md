@@ -5,9 +5,16 @@ This microservice provides a gRPC API for managing shipments and tracking their 
 ## 1. Instructions on How to Run the Service
 
 ### Option 1: Using Docker (Recommended)
-This will start the server on port `50051` inside a container.
+This will build and start the server on port `50051` inside a container.
+
+**Start the service**:
 ```bash
 docker-compose up --build
+```
+
+**Stop the service**:
+```bash
+docker-compose down
 ```
 
 ### Option 2: Running Locally
