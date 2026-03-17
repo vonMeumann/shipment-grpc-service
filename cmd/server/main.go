@@ -1,8 +1,11 @@
 package main
 
 import (
-	"log"
+	"log/slog"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
@@ -14,9 +17,20 @@ import (
 )
 
 func main() {
-	lis, err := net.Listen("tcp", ":50051")
+	// 1. Structured Logging Setup
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	slog.SetDefault(logger)
+
+	// 2. Configuration Management
+	port := os.Getenv("SERVER_PORT")
+	if port == "" {
+		port = "50051"
+	}
+
+	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
-		log.Fatalf("failed to listen: %v", err)
+		logger.Error("failed to listen", "error", err, "port", port)
+		os.Exit(1)
 	}
 
 	repo := repository.NewInMemoryRepository()
@@ -27,8 +41,19 @@ func main() {
 	pb.RegisterShipmentServiceServer(s, h)
 	reflection.Register(s)
 
-	log.Printf("server listening at %v", lis.Addr())
-	if err := s.Serve(lis); err != nil {
-		log.Fatalf("failed to serve: %v", err)
-	}
+	// Graceful Shutdown setup
+	stop := make(chan os.Signal, 1)
+	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
+
+	go func() {
+		logger.Info("server listening", "port", port)
+		if err := s.Serve(lis); err != nil {
+			logger.Error("failed to serve", "error", err)
+		}
+	}()
+
+	<-stop
+	logger.Info("shutting down server...")
+	s.GracefulStop()
+	logger.Info("server stopped")
 }
