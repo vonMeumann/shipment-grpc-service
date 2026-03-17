@@ -1,0 +1,102 @@
+{
+	"info": {
+		"_postman_id": "8a3d7b42-1e5f-4d2b-a01c-6d9b1c2e3f4g",
+		"name": "Shipment Tracking Service",
+		"description": "gRPC Collection for Shipment Tracking Microservice",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CreateShipment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "grpc",
+					"grpc": {
+						"protoPath": "api/proto/shipment/v1/shipment.proto",
+						"service": "shipment.v1.ShipmentService",
+						"method": "CreateShipment",
+						"data": "{\n  \"reference_number\": \"SHP-001\",\n  \"origin\": \"New York\",\n  \"destination\": \"Los Angeles\",\n  \"driver_details\": \"John Doe\",\n  \"unit_details\": \"Truck-01\",\n  \"shipment_amount\": 1200.50,\n  \"driver_revenue\": 950.00\n}"
+					}
+				},
+				"url": {
+					"raw": "localhost:50051",
+					"host": [
+						"localhost"
+					],
+					"port": "50051"
+				}
+			}
+		},
+		{
+			"name": "GetShipment",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "grpc",
+					"grpc": {
+						"protoPath": "api/proto/shipment/v1/shipment.proto",
+						"service": "shipment.v1.ShipmentService",
+						"method": "GetShipment",
+						"data": "{\n  \"reference_number\": \"SHP-001\"\n}"
+					}
+				},
+				"url": {
+					"raw": "localhost:50051",
+					"host": [
+						"localhost"
+					],
+					"port": "50051"
+				}
+			}
+		},
+		{
+			"name": "AddShipmentEvent",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "grpc",
+					"grpc": {
+						"protoPath": "api/proto/shipment/v1/shipment.proto",
+						"service": "shipment.v1.ShipmentService",
+						"method": "AddShipmentEvent",
+						"data": "{\n  \"reference_number\": \"SHP-001\",\n  \"status\": \"PICKED_UP\",\n  \"remarks\": \"Package collected from warehouse\"\n}"
+					}
+				},
+				"url": {
+					"raw": "localhost:50051",
+					"host": [
+						"localhost"
+					],
+					"port": "50051"
+				}
+			}
+		},
+		{
+			"name": "GetShipmentHistory",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "grpc",
+					"grpc": {
+						"protoPath": "api/proto/shipment/v1/shipment.proto",
+						"service": "shipment.v1.ShipmentService",
+						"method": "GetShipmentHistory",
+						"data": "{\n  \"reference_number\": \"SHP-001\"\n}"
+					}
+				},
+				"url": {
+					"raw": "localhost:50051",
+					"host": [
+						"localhost"
+					],
+					"port": "50051"
+				}
+			}
+		}
+	]
+}

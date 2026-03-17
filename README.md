@@ -30,6 +30,12 @@ docker-compose down
    ```
    *Note: Use `SERVER_PORT=8080 go run ...` to change the default port.*
 
+### Option 3: Postman (GUI)
+1. Open Postman and click **Import**.
+2. Select the file: `postman/Shipment_Service.postman_collection.json`.
+3. The requests are pre-configured with sample JSON data.
+4. *Note: You may need to select the `.proto` file in the request settings if Postman asks for it.*
+
 ---
 
 ## 2. Instructions on How to Run the Tests
