@@ -14,29 +14,32 @@ This document explains how to use the provided Postman collection to test the Sh
 
 ### 1. CreateShipment
 Creates a new shipment in the `PENDING` state.
-- **Valid Case**: Use standard JSON with all fields filled.
-- **Negative Case (Duplicate Ref)**: Try creating a shipment with an existing `reference_number`. 
-  - *Expected Error*: `shipment with this reference number already exists`
-- **Negative Case (Invalid Amount)**: Set `shipment_amount` to `-100.0`.
-  - *Expected Error*: `shipment amount and driver revenue cannot be negative`
+- **Method**: `shipment.v1.ShipmentService/CreateShipment`
+- **Unique Constraint**: `reference_number` must not already exist.
+- **Validation**:
+  - `reference_number`: 3-50 chars.
+  - `origin`, `destination`, `driver_details`, `unit_details`: 2-100 chars.
+  - `shipment_amount`, `driver_revenue`: Non-negative numbers.
+- **Negative Case**: (Try creating a shipment with an existing `reference_number` or set `shipment_amount` to `-100.0`)
 
 ### 2. GetShipment
 Retrieves current details of a shipment by its reference number.
-- **Valid Case**: Use an existing `reference_number`.
-- **Negative Case (Not Found)**: Use a `reference_number` that does not exist (e.g., `NON-EXISTENT-999`).
-  - *Expected Error*: `shipment not found`
+- **Method**: `shipment.v1.ShipmentService/GetShipment`
+- **Negative Case**: (Use a `reference_number` that does not exist like `NON-EXISTENT-999`)
 
 ### 3. AddShipmentEvent
 Updates the status of a shipment and adds a record to its history.
-- **Valid Case**: Transition from `PENDING` to `PICKED_UP`.
-- **Negative Case (Invalid Transition)**: Try to transition from `PENDING` directly to `DELIVERED`.
-  - *Expected Error*: `invalid status transition`
+- **Method**: `shipment.v1.ShipmentService/AddShipmentEvent`
+- **Allowed Statuses**: `PENDING`, `PICKED_UP`, `IN_TRANSIT`, `DELIVERED`, `CANCELLED`.
+- **Validation**:
+  - Transition must follow the state machine (e.g., `PENDING -> PICKED_UP`).
+  - Cannot update status of `DELIVERED` or `CANCELLED` shipments.
+- **Negative Case**: (Try to transition from `PENDING` directly to `DELIVERED` or use a delivered shipment)
 
 ### 4. GetShipmentHistory
 Returns all status events for a specific shipment, sorted by time.
-- **Valid Case**: Use an existing `reference_number`.
-- **Negative Case (Empty History)**: Use a `reference_number` that does not exist.
-  - *Expected Result*: Returns an empty list of events `[]`.
+- **Method**: `shipment.v1.ShipmentService/GetShipmentHistory`
+- **Negative Case**: (Use a `reference_number` that does not exist to get an empty list `[]`)
 
 ## Troubleshooting
 - **Connection Error**: Ensure the server is running on `localhost:50051`.
