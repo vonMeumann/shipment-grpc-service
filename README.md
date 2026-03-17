@@ -1,34 +1,54 @@
 # Shipment Tracking gRPC Microservice
 
-This microservice provides a gRPC API for managing shipments and tracking their status history.
+This microservice provides a gRPC API for managing shipments and tracking their status history, built with Go and gRPC.
 
 ## Architecture
 
-The project follows **Clean/Hexagonal Architecture** principles:
-- **Domain Layer**: Contains business models, status lifecycle, and core logic.
-- **UseCase Layer**: Orchestrates business operations and enforces rules.
-- **Infrastructure Layer**: Implements gRPC handlers and an in-memory repository.
+The project follows **Clean/Hexagonal Architecture** principles to ensure separation of concerns and testability:
+- **Domain Layer**: Core business models, status lifecycle, and transition rules.
+- **UseCase Layer**: Orchestrates business logic and persists data through an abstract repository.
+- **Infrastructure Layer**: Implements gRPC handlers, in-memory repository, and configuration.
+
+## Features & Improvements
+- [x] **Clean Architecture**: Domain logic is independent of frameworks and databases.
+- [x] **Strict Lifecycle Enforcement**: Prevents invalid status transitions (e.g., from `PENDING` to `DELIVERED` without `PICKED_UP`).
+- [x] **Dockerized**: Easy to run with `docker-compose`.
+- [x] **Structured Logging**: Uses `slog` for JSON logging, suitable for production.
+- [x] **Configuration Management**: Supports environment variables (e.g., `SERVER_PORT`).
+- [x] **Comprehensive Testing**: Includes unit tests for domain logic and full integration tests.
+- [x] **Graceful Shutdown**: Handles OS signals to stop the server cleanly.
 
 ## Requirements
 - Go 1.22+
-- `protoc` (to regenerate code if needed)
+- Docker (optional)
+- `protoc` (only if regenerating code)
 
 ## Getting Started
 
-### 1. Install dependencies
+### Option 1: Using Docker (Recommended)
 ```bash
-go mod download
+docker-compose up --build
 ```
 
-### 2. Run the server
-```bash
-go run cmd/server/main.go
-```
-The server listens on `:50051`.
+### Option 2: Running Locally
+1. **Install dependencies**:
+   ```bash
+   go mod download
+   ```
+2. **Run the server**:
+   ```bash
+   make run
+   # OR
+   go run cmd/server/main.go
+   ```
+   *Note: Use `SERVER_PORT=8080 go run ...` to change the default port (50051).*
 
-### 3. Running tests
+## Running Tests
+Run both unit and integration tests:
 ```bash
-go test ./...
+make test
+# OR
+go test -v ./...
 ```
 
 ## Status Lifecycle
