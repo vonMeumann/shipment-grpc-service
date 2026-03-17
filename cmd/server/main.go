@@ -7,10 +7,10 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	pb "github.com/user/shipment-service/api/proto/shipment/v1"
-	"github.com/user/shipment-service/internal/infrastructure/grpc/handler"
-	"github.com/user/shipment-service/internal/infrastructure/repository"
-	"github.com/user/shipment-service/internal/usecase"
+	pb "github.com/VonMeumann/shipment-service/api/proto/shipment/v1"
+	"github.com/VonMeumann/shipment-service/internal/infrastructure/grpc/handler"
+	"github.com/VonMeumann/shipment-service/internal/infrastructure/repository"
+	"github.com/VonMeumann/shipment-service/internal/usecase"
 )
 
 func main() {

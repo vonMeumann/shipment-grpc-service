@@ -653,7 +653,7 @@ const file_api_proto_shipment_v1_shipment_proto_rawDesc = "" +
 	"\x0eCreateShipment\x12\".shipment.v1.CreateShipmentRequest\x1a#.shipment.v1.CreateShipmentResponse\x12P\n" +
 	"\vGetShipment\x12\x1f.shipment.v1.GetShipmentRequest\x1a .shipment.v1.GetShipmentResponse\x12_\n" +
 	"\x10AddShipmentEvent\x12$.shipment.v1.AddShipmentEventRequest\x1a%.shipment.v1.AddShipmentEventResponse\x12e\n" +
-	"\x12GetShipmentHistory\x12&.shipment.v1.GetShipmentHistoryRequest\x1a'.shipment.v1.GetShipmentHistoryResponseBCZAgithub.com/user/shipment-service/api/proto/shipment/v1;shipmentv1b\x06proto3"
+	"\x12GetShipmentHistory\x12&.shipment.v1.GetShipmentHistoryRequest\x1a'.shipment.v1.GetShipmentHistoryResponseBIZGgithub.com/VonMeumann/shipment-service/api/proto/shipment/v1;shipmentv1b\x06proto3"
 
 var (
 	file_api_proto_shipment_v1_shipment_proto_rawDescOnce sync.Once

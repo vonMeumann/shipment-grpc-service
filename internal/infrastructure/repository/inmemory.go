@@ -4,7 +4,7 @@ import (
 	"errors"
 	"sync"
 
-	"github.com/user/shipment-service/internal/domain"
+	"github.com/VonMeumann/shipment-service/internal/domain"
 )
 
 var (

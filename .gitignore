@@ -1,0 +1,13 @@
+# Binaries
+bin/
+test_task/cmd/server/server
+
+# OS files
+.DS_Store
+
+# IDEs
+.idea/
+.vscode/
+
+# Dependencies
+vendor/

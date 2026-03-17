@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/user/shipment-service/internal/domain"
+	"github.com/VonMeumann/shipment-service/internal/domain"
 )
 
 type ShipmentUseCase interface {
