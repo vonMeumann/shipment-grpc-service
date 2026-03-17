@@ -14,28 +14,29 @@ This document explains how to use the provided Postman collection to test the Sh
 
 ### 1. CreateShipment
 Creates a new shipment in the `PENDING` state.
-- **Method**: `shipment.v1.ShipmentService/CreateShipment`
-- **Unique Constraint**: `reference_number` must not already exist.
-- **Validation**:
-  - `reference_number`: 3-50 chars.
-  - `origin`, `destination`, `driver_details`, `unit_details`: 2-100 chars.
-  - `shipment_amount`, `driver_revenue`: Non-negative numbers.
+- **Valid Case**: Use standard JSON with all fields filled.
+- **Negative Case (Duplicate Ref)**: Try creating a shipment with an existing `reference_number`. 
+  - *Expected Error*: `shipment with this reference number already exists`
+- **Negative Case (Invalid Amount)**: Set `shipment_amount` to `-100.0`.
+  - *Expected Error*: `shipment amount and driver revenue cannot be negative`
 
 ### 2. GetShipment
 Retrieves current details of a shipment by its reference number.
-- **Method**: `shipment.v1.ShipmentService/GetShipment`
+- **Valid Case**: Use an existing `reference_number`.
+- **Negative Case (Not Found)**: Use a `reference_number` that does not exist (e.g., `NON-EXISTENT-999`).
+  - *Expected Error*: `shipment not found`
 
 ### 3. AddShipmentEvent
 Updates the status of a shipment and adds a record to its history.
-- **Method**: `shipment.v1.ShipmentService/AddShipmentEvent`
-- **Allowed Statuses**: `PENDING`, `PICKED_UP`, `IN_TRANSIT`, `DELIVERED`, `CANCELLED`.
-- **Validation**:
-  - Transition must follow the state machine (e.g., `PENDING -> PICKED_UP`).
-  - Cannot update status of `DELIVERED` or `CANCELLED` shipments.
+- **Valid Case**: Transition from `PENDING` to `PICKED_UP`.
+- **Negative Case (Invalid Transition)**: Try to transition from `PENDING` directly to `DELIVERED`.
+  - *Expected Error*: `invalid status transition`
 
 ### 4. GetShipmentHistory
 Returns all status events for a specific shipment, sorted by time.
-- **Method**: `shipment.v1.ShipmentService/GetShipmentHistory`
+- **Valid Case**: Use an existing `reference_number`.
+- **Negative Case (Empty History)**: Use a `reference_number` that does not exist.
+  - *Expected Result*: Returns an empty list of events `[]`.
 
 ## Troubleshooting
 - **Connection Error**: Ensure the server is running on `localhost:50051`.
