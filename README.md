@@ -33,16 +33,15 @@ docker-compose down -v --rmi all --remove-orphans
    *Note: Use `SERVER_PORT=8080 go run ...` to change the default port.*
 
 ### Option 3: Postman (GUI)
-1. **Create a new gRPC request**: In Postman, click **New** -> **gRPC**.
-2. **Enter URL**: Set the server URL to `localhost:50051`.
-3. **Configure Service Definition**:
-    - Click on the **Service** tab (or the method selection dropdown).
-    - Select **Import a .proto file** and pick `api/proto/shipment/v1/shipment.proto`.
-    - Choose **Import as API**.
-4. **Invoke Methods**:
-    - Select a method (e.g., `CreateShipment`).
-    - Use the **Message** tab to enter your JSON payload (click **Generate Example** for a template).
-    - Click **Invoke** to send the request.
+1. **Import the Collection**: You can use the shared Postman collection link: [Shipment Service Collection](https://www.postman.com/smagulalkey/workspace/testtask/collection/8a3d7b42-1e5f-4d2b-a01c-6d9b1c2e3f4g)
+2. **Configure gRPC**:
+    - Select any request (e.g., `CreateShipment`) from the collection.
+    - Go to the **Service definition** tab (or the **Service** dropdown under the URL).
+    - Click **Import a .proto file** and select `api/proto/shipment/v1/shipment.proto`.
+    - If prompted, choose **Import as API**.
+3. **Execute Requests**:
+    - Go to the **Message** tab to see the JSON request body.
+    - Click **Invoke** (or **Send**) to trigger the gRPC call to `localhost:50051`.
 
 ---
 
