@@ -21,6 +21,7 @@ func NewShipmentHandler(u usecase.ShipmentUseCase) *ShipmentHandler {
 
 func (h *ShipmentHandler) CreateShipment(ctx context.Context, req *pb.CreateShipmentRequest) (*pb.CreateShipmentResponse, error) {
 	err := h.usecase.CreateShipment(
+		ctx,
 		req.ReferenceNumber,
 		req.Origin,
 		req.Destination,
@@ -36,7 +37,7 @@ func (h *ShipmentHandler) CreateShipment(ctx context.Context, req *pb.CreateShip
 }
 
 func (h *ShipmentHandler) GetShipment(ctx context.Context, req *pb.GetShipmentRequest) (*pb.GetShipmentResponse, error) {
-	shipment, err := h.usecase.GetShipment(req.ReferenceNumber)
+	shipment, err := h.usecase.GetShipment(ctx, req.ReferenceNumber)
 	if err != nil {
 		return nil, err
 	}
@@ -56,7 +57,7 @@ func (h *ShipmentHandler) GetShipment(ctx context.Context, req *pb.GetShipmentRe
 }
 
 func (h *ShipmentHandler) AddShipmentEvent(ctx context.Context, req *pb.AddShipmentEventRequest) (*pb.AddShipmentEventResponse, error) {
-	err := h.usecase.AddStatusEvent(req.ReferenceNumber, domain.ShipmentStatus(req.Status), req.Remarks)
+	err := h.usecase.AddStatusEvent(ctx, req.ReferenceNumber, domain.ShipmentStatus(req.Status), req.Remarks)
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +65,7 @@ func (h *ShipmentHandler) AddShipmentEvent(ctx context.Context, req *pb.AddShipm
 }
 
 func (h *ShipmentHandler) GetShipmentHistory(ctx context.Context, req *pb.GetShipmentHistoryRequest) (*pb.GetShipmentHistoryResponse, error) {
-	events, err := h.usecase.GetShipmentHistory(req.ReferenceNumber)
+	events, err := h.usecase.GetShipmentHistory(ctx, req.ReferenceNumber)
 	if err != nil {
 		return nil, err
 	}

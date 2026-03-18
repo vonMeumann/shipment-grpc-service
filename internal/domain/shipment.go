@@ -1,8 +1,11 @@
 package domain
 
 import (
+	"context"
 	"errors"
 	"time"
+
+	"github.com/google/uuid"
 )
 
 type ShipmentStatus string
@@ -29,6 +32,7 @@ var (
 )
 
 type Shipment struct {
+	ID              uuid.UUID
 	ReferenceNumber string
 	Origin          string
 	Destination     string
@@ -62,6 +66,8 @@ func (s *Shipment) Validate() error {
 }
 
 type StatusEvent struct {
+	ID          uuid.UUID
+	ShipmentID  uuid.UUID
 	ShipmentRef string
 	Status      ShipmentStatus
 	Timestamp   time.Time
@@ -70,6 +76,7 @@ type StatusEvent struct {
 
 func NewShipment(ref, origin, dest, driver, unit string, amount, revenue float64) *Shipment {
 	return &Shipment{
+		ID:              uuid.New(),
 		ReferenceNumber: ref,
 		Origin:          origin,
 		Destination:     dest,
@@ -109,4 +116,12 @@ func (s *Shipment) CanTransitionTo(next ShipmentStatus) error {
 	}
 
 	return ErrInvalidStatusTransition
+}
+
+type Repository interface {
+	SaveShipment(ctx context.Context, s *Shipment) error
+	UpdateShipment(ctx context.Context, s *Shipment) error
+	GetShipment(ctx context.Context, ref string) (*Shipment, error)
+	SaveEvent(ctx context.Context, e *StatusEvent) error
+	GetEvents(ctx context.Context, ref string) ([]*StatusEvent, error)
 }

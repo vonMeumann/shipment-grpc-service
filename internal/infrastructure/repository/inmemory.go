@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"context"
 	"errors"
 	"sync"
 
@@ -24,7 +25,13 @@ func NewInMemoryRepository() *InMemoryRepository {
 	}
 }
 
-func (r *InMemoryRepository) SaveShipment(s *domain.Shipment) error {
+func (r *InMemoryRepository) SaveShipment(ctx context.Context, s *domain.Shipment) error {
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+	}
+
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -36,7 +43,13 @@ func (r *InMemoryRepository) SaveShipment(s *domain.Shipment) error {
 	return nil
 }
 
-func (r *InMemoryRepository) UpdateShipment(s *domain.Shipment) error {
+func (r *InMemoryRepository) UpdateShipment(ctx context.Context, s *domain.Shipment) error {
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+	}
+
 	r.mu.Lock()
 	defer r.mu.Unlock()
 
@@ -48,7 +61,13 @@ func (r *InMemoryRepository) UpdateShipment(s *domain.Shipment) error {
 	return nil
 }
 
-func (r *InMemoryRepository) GetShipment(ref string) (*domain.Shipment, error) {
+func (r *InMemoryRepository) GetShipment(ctx context.Context, ref string) (*domain.Shipment, error) {
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+	}
+
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 	s, ok := r.shipments[ref]
@@ -58,14 +77,26 @@ func (r *InMemoryRepository) GetShipment(ref string) (*domain.Shipment, error) {
 	return s, nil
 }
 
-func (r *InMemoryRepository) SaveEvent(e *domain.StatusEvent) error {
+func (r *InMemoryRepository) SaveEvent(ctx context.Context, e *domain.StatusEvent) error {
+	select {
+	case <-ctx.Done():
+		return ctx.Err()
+	default:
+	}
+
 	r.mu.Lock()
 	defer r.mu.Unlock()
 	r.events[e.ShipmentRef] = append(r.events[e.ShipmentRef], e)
 	return nil
 }
 
-func (r *InMemoryRepository) GetEvents(ref string) ([]*domain.StatusEvent, error) {
+func (r *InMemoryRepository) GetEvents(ctx context.Context, ref string) ([]*domain.StatusEvent, error) {
+	select {
+	case <-ctx.Done():
+		return nil, ctx.Err()
+	default:
+	}
+
 	r.mu.RLock()
 	defer r.mu.RUnlock()
 	events, ok := r.events[ref]

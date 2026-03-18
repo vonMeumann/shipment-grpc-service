@@ -1,6 +1,7 @@
 package usecase
 
 import (
+	"context"
 	"testing"
 
 	"github.com/vonMeumann/shipment-grpc-service/internal/domain"
@@ -8,29 +9,30 @@ import (
 )
 
 func TestShipmentUseCase_AddStatusEvent(t *testing.T) {
+	ctx := context.Background()
 	repo := repository.NewInMemoryRepository()
 	uc := NewShipmentUseCase(repo)
 
 	ref := "SHP-001"
-	err := uc.CreateShipment(ref, "New York", "Los Angeles", "John Doe", "Truck-01", 1000.0, 800.0)
+	err := uc.CreateShipment(ctx, ref, "New York", "Los Angeles", "John Doe", "Truck-01", 1000.0, 800.0)
 	if err != nil {
 		t.Fatalf("failed to create shipment: %v", err)
 	}
 
 	// Valid transition
-	err = uc.AddStatusEvent(ref, domain.StatusPickedUp, "Picked up from warehouse")
+	err = uc.AddStatusEvent(ctx, ref, domain.StatusPickedUp, "Picked up from warehouse")
 	if err != nil {
 		t.Errorf("expected no error for valid transition, got %v", err)
 	}
 
 	// Invalid transition
-	err = uc.AddStatusEvent(ref, domain.StatusDelivered, "Delivered early")
+	err = uc.AddStatusEvent(ctx, ref, domain.StatusDelivered, "Delivered early")
 	if err == nil {
 		t.Error("expected error for invalid transition (PickedUp to Delivered), got nil")
 	}
 
 	// Verify history
-	history, err := uc.GetShipmentHistory(ref)
+	history, err := uc.GetShipmentHistory(ctx, ref)
 	if err != nil {
 		t.Fatalf("failed to get history: %v", err)
 	}

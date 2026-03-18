@@ -17,8 +17,13 @@ import (
 )
 
 func main() {
-	// 1. Structured Logging Setup
-	logger := slog.New(slog.NewJSONHandler(os.Stdout, nil))
+	// 1. Structured Logging Setup (Explicitly using JSON for production readiness)
+	logLevel := slog.LevelInfo
+	if os.Getenv("DEBUG") == "true" {
+		logLevel = slog.LevelDebug
+	}
+	
+	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{Level: logLevel}))
 	slog.SetDefault(logger)
 
 	// 2. Configuration Management
@@ -29,7 +34,7 @@ func main() {
 
 	lis, err := net.Listen("tcp", ":"+port)
 	if err != nil {
-		logger.Error("failed to listen", "error", err, "port", port)
+		slog.Error("failed to listen", "error", err, "port", port)
 		os.Exit(1)
 	}
 
@@ -46,14 +51,14 @@ func main() {
 	signal.Notify(stop, os.Interrupt, syscall.SIGTERM)
 
 	go func() {
-		logger.Info("server listening", "port", port)
+		slog.Info("server listening", "port", port)
 		if err := s.Serve(lis); err != nil {
-			logger.Error("failed to serve", "error", err)
+			slog.Error("failed to serve", "error", err)
 		}
 	}()
 
 	<-stop
-	logger.Info("shutting down server...")
+	slog.Info("shutting down server...")
 	s.GracefulStop()
-	logger.Info("server stopped")
+	slog.Info("server stopped")
 }

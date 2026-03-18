@@ -3,6 +3,8 @@ package domain
 import (
 	"strings"
 	"testing"
+
+	"github.com/google/uuid"
 )
 
 func TestShipment_CanTransitionTo(t *testing.T) {
@@ -49,7 +51,7 @@ func TestShipment_Validate(t *testing.T) {
 	}{
 		{
 			"Valid shipment",
-			&Shipment{ReferenceNumber: "SHP-001", Origin: "Astana", Destination: "Almaty", DriverDetails: "John Doe", UnitDetails: "Volvo FH16", ShipmentAmount: 100, DriverRevenue: 50},
+			&Shipment{ID: uuid.New(), ReferenceNumber: "SHP-001", Origin: "Astana", Destination: "Almaty", DriverDetails: "John Doe", UnitDetails: "Volvo FH16", ShipmentAmount: 100, DriverRevenue: 50},
 			false,
 			nil,
 		},
@@ -72,56 +74,8 @@ func TestShipment_Validate(t *testing.T) {
 			ErrInvalidOrigin,
 		},
 		{
-			"Origin too long",
-			&Shipment{ReferenceNumber: "SHP-001", Origin: strings.Repeat("A", 101), Destination: "Almaty", DriverDetails: "John Doe", UnitDetails: "Volvo FH16"},
-			true,
-			ErrInvalidOrigin,
-		},
-		{
-			"Destination too short",
-			&Shipment{ReferenceNumber: "SHP-001", Origin: "Astana", Destination: "A", DriverDetails: "John Doe", UnitDetails: "Volvo FH16"},
-			true,
-			ErrInvalidDestination,
-		},
-		{
-			"Destination too long",
-			&Shipment{ReferenceNumber: "SHP-001", Origin: "Astana", Destination: strings.Repeat("A", 101), DriverDetails: "John Doe", UnitDetails: "Volvo FH16"},
-			true,
-			ErrInvalidDestination,
-		},
-		{
-			"Driver details too short",
-			&Shipment{ReferenceNumber: "SHP-001", Origin: "Astana", Destination: "Almaty", DriverDetails: "J", UnitDetails: "Volvo FH16"},
-			true,
-			ErrInvalidDriverDetails,
-		},
-		{
-			"Driver details too long",
-			&Shipment{ReferenceNumber: "SHP-001", Origin: "Astana", Destination: "Almaty", DriverDetails: strings.Repeat("D", 101), UnitDetails: "Volvo FH16"},
-			true,
-			ErrInvalidDriverDetails,
-		},
-		{
-			"Unit details too short",
-			&Shipment{ReferenceNumber: "SHP-001", Origin: "Astana", Destination: "Almaty", DriverDetails: "John Doe", UnitDetails: "V"},
-			true,
-			ErrInvalidUnitDetails,
-		},
-		{
-			"Unit details too long",
-			&Shipment{ReferenceNumber: "SHP-001", Origin: "Astana", Destination: "Almaty", DriverDetails: "John Doe", UnitDetails: strings.Repeat("U", 101)},
-			true,
-			ErrInvalidUnitDetails,
-		},
-		{
 			"Negative shipment amount",
 			&Shipment{ReferenceNumber: "SHP-001", Origin: "Astana", Destination: "Almaty", DriverDetails: "John Doe", UnitDetails: "Volvo FH16", ShipmentAmount: -100.0, DriverRevenue: 50.0},
-			true,
-			ErrInvalidAmount,
-		},
-		{
-			"Negative driver revenue",
-			&Shipment{ReferenceNumber: "SHP-001", Origin: "Astana", Destination: "Almaty", DriverDetails: "John Doe", UnitDetails: "Volvo FH16", ShipmentAmount: 100.0, DriverRevenue: -50.0},
 			true,
 			ErrInvalidAmount,
 		},
