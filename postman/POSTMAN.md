@@ -1,14 +1,16 @@
-# Postman gRPC Documentation
+# Postman gRPC Manual Testing Guide
 
-This document explains how to use the provided Postman collection to test the Shipment Tracking gRPC service.
+This document explains how to manually test the Shipment Tracking gRPC service in Postman.
 
 ## Setup
-1. **link**: https://gold-station-792407.postman.co/workspace/namae~8835573a-dd94-48c9-a65c-8cd4761b7f73/collection/69b9d86ffd7a2abd4befa4d9?action=share&creator=20954863
-2. **Import Proto**:
-   - In any gRPC request, go to the **Service** (or **Service definition**) tab.
+1. **New Request**: Create a new gRPC request in Postman (**New** -> **gRPC**).
+2. **Server Address**: Enter `localhost:50051`.
+3. **Import Proto Definition**:
+   - In the request window, click on the **Service** dropdown or tab.
    - Click **Import a .proto file**.
-   - Select `api/proto/shipment/v1/shipment.proto`.
-   - This allows Postman to understand the gRPC methods and validate your JSON messages.
+   - Select the project's file: `api/proto/shipment/v1/shipment.proto`.
+   - Choose **Import as API**.
+   - Now you can select any of the four methods (Create, Get, AddEvent, History).
 
 ## Available Requests
 
