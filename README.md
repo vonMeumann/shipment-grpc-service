@@ -15,8 +15,8 @@ docker-compose up --build
 **Stop the service**:
 ```bash
 docker-compose down
+# Or for a full cleanup (volumes & images):
 docker-compose down -v --rmi all --remove-orphans
-
 ```
 
 ### Option 2: Running Locally
